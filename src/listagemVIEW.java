@@ -19,7 +19,9 @@ public class listagemVIEW extends javax.swing.JFrame {
      */
     public listagemVIEW() {
         initComponents();
-        listarProdutos();
+        ProdutosDAO dao = new ProdutosDAO();
+        List<ProdutosDTO> lista = dao.listarProdutos(); // por exemplo
+        listarProdutos(lista);
     }
 
     /**
@@ -142,7 +144,7 @@ public class listagemVIEW extends javax.swing.JFrame {
         ProdutosDAO produtosdao = new ProdutosDAO();
         
         //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+//        listarProdutos();
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
@@ -202,23 +204,25 @@ public class listagemVIEW extends javax.swing.JFrame {
     private javax.swing.JTable listaProdutos;
     // End of variables declaration//GEN-END:variables
 
-    private void listarProdutos(){
+    private void listarProdutos(List<ProdutosDTO> produto){
         try {
-            ProdutosDAO produtosdao = new ProdutosDAO();
+            String columns[] = {"id", "nome", "valor", "status"};
+            String dados[][] = new String[produto.size()][columns.length];
             
-            DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
-            model.setNumRows(0);
-            
-            List<ProdutosDTO> listagem = produtosdao.listarProdutos();
-            
-            for(int i = 0; i < listagem.size(); i++){
-                model.addRow(new Object[]{
-                    listagem.get(i).getId(),
-                    listagem.get(i).getNome(),
-                    listagem.get(i).getValor(),
-                    listagem.get(i).getStatus()
-                });
+            int i = 0;
+        
+            for(ProdutosDTO p : produto) {
+                dados[i] = new String[] {
+                        String.valueOf(p.getId()),
+                        p.getNome(),
+                        String.valueOf(p.getValor()),
+                        p.getStatus()
+                };
+                i++;
             }
+            DefaultTableModel modelo = new DefaultTableModel(dados, columns);
+            listaProdutos.setModel(modelo);
+        
         } catch (Exception e) {
         }
     

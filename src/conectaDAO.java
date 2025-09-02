@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 public class conectaDAO {
     
     // Campo de URL usuario e senha do banco de dados
-    String url = "jdbc:mysql://localhost/uc11"; //Aqui vai o caminho do seu banco de dados
+    String url = "jdbc:mysql://localhost/uc11?useSSL=false"; //Aqui vai o caminho do seu banco de dados
     String user = "root";  // Aqui vai o usuario do seu banco de dados
     String password = "113322"; // aqui vai a senha do seu banco de dados
     

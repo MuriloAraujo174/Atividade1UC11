@@ -19,10 +19,11 @@ public class ProdutosDAO {
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
+    public ProdutosDAO() {
+        this.conn = new conectaDAO().connectDB();
+    }
+    
     public void cadastrarProduto (ProdutosDTO produto){
-        
-        
-        conn = new conectaDAO().connectDB();
         
         try {
             PreparedStatement st = this.conn.prepareStatement(sql);
@@ -55,6 +56,8 @@ public class ProdutosDAO {
                 produto.setNome(rs.getString("nome"));
                 produto.setValor(rs.getInt("valor"));
                 produto.setStatus(rs.getString("status"));
+                
+                listagem.add(produto);
                 
             }
             return listagem;
