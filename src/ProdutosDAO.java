@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 public class ProdutosDAO {
     
-    String sql = "insert into produtos (nome, valor) values (?, ?);";
+    String sql = "insert into produtos (nome, valor, status) values (?, ?, ?);";
     
     Connection conn;
     PreparedStatement prep;
@@ -30,6 +30,7 @@ public class ProdutosDAO {
             
             st.setString(1, produto.getNome());
             st.setInt(2, produto.getValor());
+            st.setString(3, produto.getStatus());
             
             st.executeUpdate();
             
@@ -110,6 +111,36 @@ public class ProdutosDAO {
             return produto;
             
         } catch (Exception e) {
+            return null;
+        }
+        
+    }
+    
+    public List<ProdutosDTO> listagemVendidos() {
+        sql = "select * from produtos where status = 'Vendido'";
+        
+        try {
+            PreparedStatement st = this.conn.prepareStatement(sql);
+            
+            ResultSet rs = st.executeQuery();
+            
+            List<ProdutosDTO> ListagemVendidos = new ArrayList<>();
+            
+            while(rs.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+                
+                produto.setId(rs.getInt("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setValor(rs.getInt("valor"));
+                produto.setStatus(rs.getString("status"));
+                
+                ListagemVendidos.add(produto);
+            }
+            
+            return ListagemVendidos;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutosDAO.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex.getMessage());
             return null;
         }
         
